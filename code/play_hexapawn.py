@@ -27,6 +27,18 @@ def point_from_coords(text):
     return hexpawn.Point(row, COL_NAMES.index(col_name) + 1)
 
 
+def points_from_coords(text):
+    col_start = text[0]
+    row_start = int(text[1])
+    col_end = text[2]
+    row_end = int(text[3])
+
+    return (
+        hexpawn.Point(row_start, COL_NAMES.index(col_start) + 1),
+        hexpawn.Point(row_end, COL_NAMES.index(col_end) + 1)
+    )
+
+
 def main():
     game = hexpawn.GameState.new_game()
 
@@ -39,8 +51,8 @@ def main():
         print_board(game.board)
         if game.next_player == human_player:
             human_move = input('-- ')
-            point = point_from_coords(human_move.strip())
-            move = hexpawn.Move(point)
+            point_start, point_end = points_from_coords(human_move.strip())
+            move = hexpawn.Move(point_start, point_end)
         else:
             move = bot.select_move(game)
         game = game.apply_move(move)
